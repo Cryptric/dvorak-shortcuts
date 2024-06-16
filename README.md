@@ -1,5 +1,18 @@
 # Dvorak <> Qwerty - Keyboard remapping for Linux when pressing L-CTRL, L-ALT, or L-WIN
 
+This fork contains layout modifications for my custom dvorak.
+
+## Setup notes
+```bash
+sudo visudo
+```
+replace yourusername with your real username
+```bash
+yourusername ALL=(ALL) NOPASSWD: /path/to/your/script.sh
+```
+
+
+
 Since I type with the "Dvorak" keyboard layout, the shortcuts such as ctrl-c, ctrl-x, or ctrl-v are not comfortable anymore for using the left hand only.
 
 Furthermore, many applications have their default shortcuts, which I'm used to. So for these shortcuts I prefer "Querty". Since there is no way to configure this, this program intercept these keys and remap them from "Dvorak" to "Querty" when pressing L-CTRL, L-ALT, L-WIN, or any of those combinations.
