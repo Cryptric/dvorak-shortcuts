@@ -71,6 +71,7 @@
 #include <stdbool.h>
 
 #define MAX_LENGTH 16
+// #define DEBUG
 
 static int emit(const int fd, const __u16 type, const __u16 code, const __s32 value) {
     struct input_event ev = {0};
@@ -121,6 +122,7 @@ static int umlaut2dvorak(int key) {
 
 //from: https://github.com/kentonv/dvorak-qwerty/tree/master/unix
 static int qwerty2dvorak(int key) {
+    // printf("matching key %d\n", key);
     switch (key) {
         case KEY_MINUS:
             return KEY_APOSTROPHE;
@@ -133,15 +135,15 @@ static int qwerty2dvorak(int key) {
         case KEY_E:
             return KEY_D;
         case KEY_R:
-            return KEY_K;
-        case KEY_T:
             return KEY_O;
+        case KEY_T:
+            return KEY_K;
         case KEY_Y:
-            return KEY_T;
+            return KEY_P;
         case KEY_U:
-            return KEY_G;
-        case KEY_I:
             return KEY_F;
+        case KEY_I:
+            return KEY_G;
         case KEY_O:
             return KEY_S;
         case KEY_P:
@@ -155,13 +157,13 @@ static int qwerty2dvorak(int key) {
         case KEY_S:
             return KEY_SEMICOLON;
         case KEY_D:
-            return KEY_J;
+            return KEY_H;
         case KEY_F:
-            return KEY_Z;
+            return KEY_Y;
         case KEY_G:
             return KEY_U;
         case KEY_H:
-            return KEY_H;
+            return KEY_J;
         case KEY_J:
             return KEY_C;
         case KEY_K:
@@ -535,13 +537,16 @@ int main(int argc, char *argv[]) {
                         }
                     }
                 }
-
-                //printf("Dvorak Key: %d 0x%04x => 0x%04x (%d, %d)\n", ev.value, (int)ev.code, code, (int)ev.code, code);
+#ifdef DEBUG
+                printf("Dvorak Key: %d 0x%04x => 0x%04x (%d, %d)\n", ev.value, (int)ev.code, code, (int)ev.code, code);
+#endif
                 if (emit(fdo, ev.type, code, ev.value) < 0) {
                     fprintf(stderr, "Cannot write to device: %s.\n", strerror(errno));
                 }
             } else {
-                //printf("Regular key: %d 0x%04x (%d)\n", ev.value, (int)ev.code, (int)ev.code);
+#ifdef DEBUG
+                printf("Regular key: %d 0x%04x (%d)\n", ev.value, (int)ev.code, (int)ev.code);
+#endif
                 if (emit(fdo, ev.type, ev.code, ev.value) < 0) {
                     fprintf(stderr, "Cannot write to device: %s.\n", strerror(errno));
                 }
