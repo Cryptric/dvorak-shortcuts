@@ -135,15 +135,15 @@ static int qwerty2dvorak(int key) {
         case KEY_E:
             return KEY_D;
         case KEY_R:
-            return KEY_O;
-        case KEY_T:
             return KEY_K;
+        case KEY_T:
+            return KEY_O;
         case KEY_Y:
-            return KEY_P;
+            return KEY_T;
         case KEY_U:
-            return KEY_F;
-        case KEY_I:
             return KEY_G;
+        case KEY_I:
+            return KEY_F;
         case KEY_O:
             return KEY_S;
         case KEY_P:
@@ -157,25 +157,25 @@ static int qwerty2dvorak(int key) {
         case KEY_S:
             return KEY_SEMICOLON;
         case KEY_D:
-            return KEY_H;
+            return KEY_J;
         case KEY_F:
             return KEY_Y;
         case KEY_G:
             return KEY_U;
         case KEY_H:
-            return KEY_J;
+            return KEY_H;
         case KEY_J:
             return KEY_C;
         case KEY_K:
             return KEY_V;
         case KEY_L:
-            return KEY_P;
+            return KEY_APOSTROPHE;
         case KEY_SEMICOLON:
             return KEY_Z;
         case KEY_APOSTROPHE:
             return KEY_Q;
         case KEY_Z:
-            return KEY_SLASH;
+            return KEY_P;
         case KEY_X:
             return KEY_B;
         case KEY_C:
