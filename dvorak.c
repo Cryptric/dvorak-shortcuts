@@ -69,6 +69,10 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <pthread.h>
+#include <stdatomic.h>
+
+#include "dvorak_dbus.h"
 
 #define MAX_LENGTH 16
 // #define DEBUG
@@ -225,9 +229,11 @@ int main(int argc, char *argv[]) {
     struct uinput_setup usetup;
     ssize_t n;
     int fdi, fdo, i, mod_current, code, ret_val, mod_state = 0, array_qwerty_counter = 0, array_umlaut_counter = 0, lAlt = 0, opt;
-    bool alt_gr = false, isDvorak = false, isUmlaut = false, lshift = false, rshift = false, noToggle = false, noCapsLockAsModifier = false;
+    bool alt_gr = false, isUmlaut = false, lshift = false, rshift = false, noToggle = false, noCapsLockAsModifier = false;
+    atomic_bool isDvorak = false;
     unsigned int array_qwerty[MAX_LENGTH] = {0}, array_umlaut[MAX_LENGTH] = {0}, array_bit[KEY_MAX/32 + 1]= {0};
     char keyboard_name[UINPUT_MAX_NAME_SIZE] = "Unknown";
+    pthread_t dbus_thread;
 
     char *device = NULL, *match = NULL;
     while ((opt = getopt(argc, argv, "ud:m:tc")) != -1) {
@@ -360,6 +366,11 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
+
+    if (pthread_create(&dbus_thread, NULL, create_dvorak_dbus, &isDvorak) != 0) {
+        fprintf(stderr, "Cannot create dbus thread: %s.\n", strerror(errno));
+        return EXIT_FAILURE;
+    }
     //we should flush fdi, but I am not sure how to do this, in the meantime, just wait and don´t press
     //any key while starting longer than 200m
     usleep(200000);
@@ -558,6 +569,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
+    pthread_cancel(dbus_thread);
     fflush(stdout);
     fprintf(stderr, "%s.\n", strerror(errno));
     return EXIT_FAILURE;

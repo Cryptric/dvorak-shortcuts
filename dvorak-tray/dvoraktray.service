@@ -1,0 +1,10 @@
+[Unit]
+Description=Dvorak Keyboard Tray Icon
+After=graphical-session.target
+
+[Service]
+ExecStart=/home/gawain/.dvorak/dvorak-tray
+Restart=on-failure
+
+[Install]
+WantedBy=graphical-session.target
